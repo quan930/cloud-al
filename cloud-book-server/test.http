@@ -1,0 +1,55 @@
+### 增加类别
+POST http://localhost:8071/category
+Content-Type: application/json
+
+{
+  "categoryName": "科技"
+}
+
+### 类别列表
+GET http://localhost:8071/category
+Content-Type: application/json
+
+### 修改类别
+PUT http://localhost:8071/category
+Content-Type: application/json
+
+{
+  "categoryId": 1,
+  "categoryName": "人文"
+}
+
+### 删除类别
+DELETE http://localhost:8071/category/6
+Content-Type: application/json
+
+### 增加书籍
+POST http://localhost:8071/book
+Content-Type: application/json
+
+{
+  "bookName": "Thinking in JAVA",
+  "bookAuthor": "Bruce Eckel",
+  "categorys": [
+    {
+      "categoryName": "计算机"
+    },
+    {
+      "categoryName": "计算机"
+    }
+  ]
+}
+
+### 书籍列表
+GET http://localhost:8071/book
+Content-Type: application/json
+
+### 增加指定书籍类别
+POST http://localhost:8071/book/9/category
+Content-Type: application/json
+
+[
+  {
+    "categoryName": "科技"
+  }
+]
