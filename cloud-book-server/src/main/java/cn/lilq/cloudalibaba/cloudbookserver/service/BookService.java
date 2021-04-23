@@ -36,4 +36,6 @@ public interface BookService extends IService<BookDO> {
      * @return
      */
     Integer addBookCategory(Long bookId,List<CategoryAO> categoryAOS);
+
+    Boolean updateBook(BookAO bookAO);
 }

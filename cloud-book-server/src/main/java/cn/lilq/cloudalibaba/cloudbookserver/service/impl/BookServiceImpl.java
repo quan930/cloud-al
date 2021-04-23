@@ -10,8 +10,10 @@ import cn.lilq.cloudalibaba.cloudbookserver.model.entity.CategoryDO;
 import cn.lilq.cloudalibaba.cloudbookserver.model.vo.BookVO;
 import cn.lilq.cloudalibaba.cloudbookserver.model.vo.CategoryVO;
 import cn.lilq.cloudalibaba.cloudbookserver.service.BookService;
+import cn.lilq.cloudalibaba.cloudbookserver.service.CategoryService;
 import cn.lilq.cloudalibaba.cloudcommon.util.CopyUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,8 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, BookDO> implements 
     private BookMapper bookMapper;
     @Resource
     private CategoryMapper categoryMapper;
+    @Resource
+    private CategoryService categoryService;
 
     @Override
     public List<BookVO> bookList() {
@@ -67,5 +71,21 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, BookDO> implements 
         int cm = categoryMapper.insertList(CopyUtil.copyList(categoryAOS, CategoryDO.class));
         log.info("addBookCategory()$$cm:{}", java.util.Optional.of(cm));
         return cm;
+    }
+
+    @Transactional
+    @Override
+    public Boolean updateBook(BookAO bookAO) {
+        log.info("<input>updateBook(BookAO bookAO)$$bookAO:{}", bookAO);
+        int bm = bookMapper.update(CopyUtil.copyObj(bookAO,BookDO.class),new UpdateWrapper<BookDO>().eq("book_id",bookAO.getBookId()));
+        if(bm==0)
+            return false;
+        log.info("updateBook(BookAO bookAO)$$bm:{}", java.util.Optional.of(bm));
+        if (bookAO.getCategorys().size()==0)
+            return true;
+        //todo 批量更新有瑕疵
+        boolean sb = categoryService.updateBatchById(CopyUtil.copyList(bookAO.getCategorys(),CategoryDO.class));
+        log.info("updateBook(BookAO bookAO)$$sb:{}", java.util.Optional.of(sb));
+        return sb;
     }
 }

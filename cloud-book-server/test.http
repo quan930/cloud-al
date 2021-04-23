@@ -53,3 +53,18 @@ Content-Type: application/json
     "categoryName": "科技"
   }
 ]
+
+### 修改指定书籍
+PUT http://localhost:8071/book
+Content-Type: application/json
+
+{
+  "bookId": 5,
+  "bookName": "Core JAVA",
+  "categorys": [
+    {
+      "categoryId": 10,
+      "categoryName": "JAVA"
+    }
+  ]
+}

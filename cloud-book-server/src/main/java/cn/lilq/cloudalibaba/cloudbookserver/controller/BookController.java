@@ -3,13 +3,12 @@ package cn.lilq.cloudalibaba.cloudbookserver.controller;
 
 import cn.lilq.cloudalibaba.cloudbookserver.model.ao.BookAO;
 import cn.lilq.cloudalibaba.cloudbookserver.model.ao.CategoryAO;
-import cn.lilq.cloudalibaba.cloudbookserver.model.entity.BookDO;
 import cn.lilq.cloudalibaba.cloudbookserver.model.vo.BookVO;
 import cn.lilq.cloudalibaba.cloudbookserver.service.BookService;
 import cn.lilq.cloudalibaba.cloudcommon.Result;
 import cn.lilq.cloudalibaba.cloudcommon.ReturnEnum;
-import cn.lilq.cloudalibaba.cloudcommon.util.CopyUtil;
 import cn.lilq.cloudalibaba.cloudcommon.validation.Add;
+import cn.lilq.cloudalibaba.cloudcommon.validation.Update;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +45,11 @@ public class BookController {
     @PostMapping("/{id}/category")
     public Result<Integer> addBookCategory(@PathVariable Long id,@Validated(Add.class) @RequestBody List<CategoryAO> categoryAOS){
         return bookService.addBookCategory(id,categoryAOS)!=0?Result.success(1):Result.fail(ReturnEnum.MSG_ERROR_6,null);
+    }
+
+    @PutMapping("")
+    public Result<Boolean> updateBook(@Validated(Update.class) @RequestBody BookAO bookAO){
+        return Result.success(bookService.updateBook(bookAO));
     }
 }
 
